@@ -9,25 +9,18 @@ const s3 = new S3Client({
     },
 });
 
-export async function uploadPdfToS3(file: File | Express.Multer.File) {
-    // 파일명 안전하게 가져오기
-    const originalName = "name" in file ? file.name : file.originalname;
-    const fileKey = `documents/${uuidv4()}-${originalName}`;
-
-    // 버퍼 가져오기
-    const buffer =
-        "arrayBuffer" in file
-            ? Buffer.from(await file.arrayBuffer())
-            : file.buffer;
+export async function uploadPdfToS3(file: File) {
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const key = `documents/${uuidv4()}-${file.name}`;
 
     await s3.send(
         new PutObjectCommand({
-            Bucket: process.env.S3_BUCKET_NAME!,
-            Key: fileKey,
+            Bucket: process.env.AWS_S3_BUCKET!, // 환경변수 확인
+            Key: key,
             Body: buffer,
-            ContentType: "application/pdf",
+            ContentType: file.type,
         })
     );
 
-    return fileKey;
+    return key;
 }
