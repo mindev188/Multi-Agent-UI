@@ -46,7 +46,7 @@ export default function DocumentListPage() {
     };
 
     const handleAnalyze = async (doc: DocumentMeta) => {
-        const s3Url = `https://s3-eddi-lsh-bucket.s3.ap-northeast-2.amazonaws.com/${doc.s3_key}`;
+        const s3Url = `https://first-multi-agent-bucket.s3.us-east-1.amazonaws.com/${doc.s3_key}`;
         setAnalyzingId(doc.id);
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/documents-multi-agents/analyze`, {
@@ -96,7 +96,7 @@ export default function DocumentListPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {documents.map((doc) => {
-                    const s3Url = `https://s3-eddi-lsh-bucket.s3.ap-northeast-2.amazonaws.com/${doc.s3_key}`;
+                    const s3Url = `https://first-multi-agent-bucket.s3.us-east-1.amazonaws.com/${doc.s3_key}`;
                     const result = analyzeResults[doc.id];
                     const isAnalyzing = analyzingId === doc.id;
 
